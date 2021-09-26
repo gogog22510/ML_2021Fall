@@ -27,7 +27,12 @@ class DecisionTree(base.Experiment):
         self.log("Validation size = {}", len(val_ds_pd))
         self.log("Testing size = {}", len(test_ds_pd))
 
-        drop_cols = ['price', 'province', 'region', 'variety', 'winery']
+        # Name of the label column
+        label = 'level'
+
+        drop_cols = [c for c in wine_data.columns if c != label]
+        drop_cols.append('NONE')
+
         best_drop_col = None
         best_test_ds = None
         best_model = None
@@ -37,13 +42,15 @@ class DecisionTree(base.Experiment):
         for dcol in drop_cols:
             self.log("Start training with drop column \"{}\"...", dcol)
 
-            # Name of the label column
-            label = 'level'
-
             # Convert to tensorflow dataset
-            train_ds = tfdf.keras.pd_dataframe_to_tf_dataset(train_ds_pd.drop(columns=[dcol]), label=label)
-            val_ds = tfdf.keras.pd_dataframe_to_tf_dataset(val_ds_pd.drop(columns=[dcol]), label=label)
-            test_ds = tfdf.keras.pd_dataframe_to_tf_dataset(test_ds_pd.drop(columns=[dcol]), label=label)
+            if dcol == 'NONE':
+                train_ds = tfdf.keras.pd_dataframe_to_tf_dataset(train_ds_pd, label=label)
+                val_ds = tfdf.keras.pd_dataframe_to_tf_dataset(val_ds_pd, label=label)
+                test_ds = tfdf.keras.pd_dataframe_to_tf_dataset(test_ds_pd, label=label)
+            else:
+                train_ds = tfdf.keras.pd_dataframe_to_tf_dataset(train_ds_pd.drop(columns=[dcol]), label=label)
+                val_ds = tfdf.keras.pd_dataframe_to_tf_dataset(val_ds_pd.drop(columns=[dcol]), label=label)
+                test_ds = tfdf.keras.pd_dataframe_to_tf_dataset(test_ds_pd.drop(columns=[dcol]), label=label)
 
             # Train a Random Forest model.
             model = tfdf.keras.RandomForestModel(
@@ -102,16 +109,18 @@ class DecisionTree(base.Experiment):
         drop_cols = data['drop_cols']
         # Plot
         for k in ['train', 'validation']:
-            plt.figure(figsize=(12, 4))
+            plt.figure(figsize=(24, 8))
 
             plt.subplot(1, 2, 1)
             plt.plot(drop_cols, [met[k]['accuracy'] for met in metrics])
             plt.xlabel("Dropped column")
             plt.ylabel(f"Accuracy ({k})")
+            plt.xticks(rotation=45)
 
             plt.subplot(1, 2, 2)
             plt.plot(drop_cols, [met[k]['mse'] for met in metrics])
             plt.xlabel("Dropped column")
             plt.ylabel(f"MSE ({k})")
+            plt.xticks(rotation=45)
 
             plt.savefig(f"plot/DT_{k}.png")

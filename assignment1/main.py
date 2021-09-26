@@ -30,8 +30,7 @@ def log(self, msg, *args):
 if __name__ == "__main__":
     # Load wine data
     loader = base.WineDataLoader(verbose=VERBOSE)
-    # wine_data = loader.load()
-    # print(wine_data.describe())
+    # loader = base.WineQualityDataLoader(verbose=VERBOSE)
 
     # Run Decision Tree experiment
     dt_exp = DT.DecisionTree(loader, verbose=VERBOSE)

@@ -49,7 +49,6 @@ class DataLoader(ABC):
 
 class WineDataLoader(DataLoader):
     def __init__(self, verbose=False):
-        # super().__init__('data/winemag-data-small.csv', verbose)
         super().__init__('data/winemag-data-130k-v2.csv', verbose)
 
     def load(self, norm_method='MEAN'):
@@ -87,6 +86,31 @@ class WineDataLoader(DataLoader):
             data_col = df[key]
             encoder.fit(data_col)
             df[key] = encoder.transform(data_col)
+
+        # Normalized
+        for key in df.columns:
+            if key == 'level':
+                continue
+            df[key] = util.normalized(df[key], method=norm_method)
+
+        # print data info
+        self.log("Columns: {}", df.columns)
+
+        return df
+
+class WineQualityDataLoader(DataLoader):
+    def __init__(self, verbose=False):
+        super().__init__('data/winequality-white.csv', verbose)
+
+    def load(self, norm_method='MEAN'):
+        self.log("Loading wine quality data...")
+        df = pd.read_csv(self._fname, sep=';')
+
+        # Drop NA
+        df = df.dropna()
+
+        # Rename column
+        df.rename(columns={'quality':'level'}, inplace=True)
 
         # Normalized
         for key in df.columns:
