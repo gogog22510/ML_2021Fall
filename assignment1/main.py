@@ -38,17 +38,17 @@ if __name__ == "__main__":
     dt_exp.run()
 
     # Run Boosting Decision Tree experiment
-    # bdt_exp = Boosting.BoostedDecisionTree(loader, verbose=VERBOSE)
-    # bdt_exp.run()
+    bdt_exp = Boosting.BoostedDecisionTree(loader, verbose=VERBOSE)
+    bdt_exp.run()
 
     # Run KNN experiment
-    # knn_exp = KNN.KNeighbors(loader, verbose=VERBOSE)
-    # knn_exp.run()
+    knn_exp = KNN.KNeighbors(loader, verbose=VERBOSE)
+    knn_exp.run()
 
     # Run NN experiment
-    # nn_exp = NN.NeuralNetwork(loader, verbose=VERBOSE)
-    # nn_exp.run()
+    nn_exp = NN.NeuralNetwork(loader, verbose=VERBOSE)
+    nn_exp.run()
 
     # Run SVM experiment
-    # svm_exp = SVM.SupportVectorClassifier(loader, verbose=VERBOSE)
-    # svm_exp.run()
+    svm_exp = SVM.SupportVectorClassifier(loader, verbose=VERBOSE)
+    svm_exp.run()
