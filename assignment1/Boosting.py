@@ -22,7 +22,7 @@ class BoostedDecisionTree(base.Experiment):
         # Loading wine data and split to training/validation/testing set
         wine_data = self._data_loader.load()
         train_ds_pd, val_ds_pd, test_ds_pd = util.get_dataset_partitions_pd(wine_data,
-            train_split=0.6, val_split=0.2, test_split=0.2)
+            train_split=0.8, val_split=0.1, test_split=0.1)
         self.log("Training size = {}", len(train_ds_pd))
         self.log("Validation size = {}", len(val_ds_pd))
         self.log("Testing size = {}", len(test_ds_pd))

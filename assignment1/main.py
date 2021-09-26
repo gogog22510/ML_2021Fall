@@ -34,8 +34,8 @@ if __name__ == "__main__":
     # print(wine_data.describe())
 
     # Run Decision Tree experiment
-    # dt_exp = DT.DecisionTree(loader, verbose=VERBOSE)
-    # dt_exp.run()
+    dt_exp = DT.DecisionTree(loader, verbose=VERBOSE)
+    dt_exp.run()
 
     # Run Boosting Decision Tree experiment
     # bdt_exp = Boosting.BoostedDecisionTree(loader, verbose=VERBOSE)
@@ -50,5 +50,5 @@ if __name__ == "__main__":
     # nn_exp.run()
 
     # Run SVM experiment
-    svm_exp = SVM.SupportVectorClassifier(loader, verbose=VERBOSE)
-    svm_exp.run()
+    # svm_exp = SVM.SupportVectorClassifier(loader, verbose=VERBOSE)
+    # svm_exp.run()
